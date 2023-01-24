@@ -6,9 +6,24 @@ module.exports = function SvcTalos(opts) {
         const response = result;
         return response;    
     }
-
+    async function getRandomEvents(){
+        console.log("hello from svc Talos");
+        const result = await db['primary'].any(mdlTest.getRandomEvents, '');
+        
+        return result;
+    }
+    async function getEventData(id){
+       
+        const result = await db['primary'].any(mdlTest.getEventData,{
+            event_id: id,
+        });
+     
+       return result;
+    }
     return {
         getFromDB,
+        getRandomEvents,
+        getEventData
     }
 
 

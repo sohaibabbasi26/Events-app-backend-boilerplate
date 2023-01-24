@@ -1,3 +1,5 @@
+
+
 module.exports = function AuthMediator(opts) {
 
     const {
@@ -13,9 +15,20 @@ module.exports = function AuthMediator(opts) {
         account = await svcTalos.getFromDB({ phone: number });
         return account;
     }
+    async function getRandomEvents(){
+        result = await svcTalos.getRandomEvents();
+        return result;
+    }
+    async function getEventData(id){
+
+        result = await svcTalos.getEventData(id);
+        return result;
+    }
 
 
     return {
+        getRandomEvents,
+        getEventData,
         test
     }
 }
