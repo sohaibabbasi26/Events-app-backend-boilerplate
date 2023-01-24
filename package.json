@@ -38,9 +38,9 @@
   "author": "amustafa",
   "license": "GPL-3.0",
   "dependencies": {
+    "@fastify/swagger": "^8.3.0",
     "@hapi/boom": "^9.1.0",
     "@hapi/joi": "^17.1.1",
-
     "amqplib": "^0.6.0",
     "async-redis": "^1.1.7",
     "awilix": "^4.2.1",

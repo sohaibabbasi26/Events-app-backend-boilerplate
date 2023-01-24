@@ -2,11 +2,9 @@ const fastify = require('fastify');
 const helmet = require('fastify-helmet');
 const fastifyJWT = require('fastify-jwt');
 const fastifyCors = require('fastify-cors');
-
 const config = require('./config');
 const di = require('./di');
 const adapters = require('../adapters');
-
 const headlocker = require('../middleware/Headlocker');
 const errorDecorator = require('../middleware/ErrorDecorator');
 const responseDecorator = require('../middleware/ResponseDecorator');

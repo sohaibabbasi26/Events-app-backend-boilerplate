@@ -1,10 +1,9 @@
 module.exports = function SvcCache(opts) {
-
     const { cache } = opts;
 
     async function setKV({ key, value, time }) {
         if (time) {
-            await cache.primary.set(key, value, 'EX', time);
+            await cache.primary.set(key, value, "EX", time);
         } else await cache.primary.set(key, value);
 
         return true;
@@ -16,13 +15,12 @@ module.exports = function SvcCache(opts) {
         let _hashObj = {};
 
         if (_fields.length === 1) {
-
             _hashObj[_fields[0]] = fields[_fields[0]];
 
-            await cache.primary.hmset(hashKey, _hashObj)
+            await cache.primary.hmset(hashKey, _hashObj);
         } else {
             for (let i = 0; i < _fields.length; ++i) {
-                _hashObj[_fields[i]] = fields[_fields[i]]
+                _hashObj[_fields[i]] = fields[_fields[i]];
             }
 
             await cache.primary.hmset(hashKey, _hashObj);
@@ -36,7 +34,7 @@ module.exports = function SvcCache(opts) {
     }
 
     async function setInHash({ key, field, value }) {
-        return await cache.primary.hmset(key, field, value)
+        return await cache.primary.hmset(key, field, value);
     }
 
     async function getFromHash({ key, field }) {
@@ -59,5 +57,5 @@ module.exports = function SvcCache(opts) {
         getHash,
         getFromHash,
         deleteHash,
-    }
-}
+    };
+};
