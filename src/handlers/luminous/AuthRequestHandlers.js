@@ -9,17 +9,24 @@ module.exports = function AuthRequestHandlers(opts) {
     }
 
     async function getRandomEvents(request, reply) {
-          const sent = await authMediator.getRandomEvents();
-          reply.send(sent);
+        const sent = await authMediator.getRandomEvents();
+        reply.send(sent);
     }
     async function getEventData(request, reply) {
         const id = request.query.id;
         const sent = await authMediator.getEventData(id);
         reply.send(sent);
-  }
+    }
+    async function getEventsWithLocation(request, reply) {
+        const destination_id = request.query.id;
+        
+        const sent = await authMediator.getEventsWithLocation(destination_id);
+        reply.send(sent);
+    }
     return {
         test,
         getRandomEvents,
-        getEventData
+        getEventData,
+        getEventsWithLocation,
     };
 };
