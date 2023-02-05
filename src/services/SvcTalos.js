@@ -1,5 +1,7 @@
 module.exports = function SvcTalos(opts) {
+
     const { svcCache, queryHandler, mdlTest, db, eventAd, _ } = opts;
+
     async function getFromDB({ phone }) {
         //const token = await svcCache.getKV({ key: 'ELRP_TOKEN' });
         const result = await db["primary"].any(mdlTest.query, "");
@@ -20,6 +22,7 @@ module.exports = function SvcTalos(opts) {
         return result;
     }
 
+
     async function eventAds(tableName) {
         console.log("services-> ", tableName);
 
@@ -36,15 +39,23 @@ module.exports = function SvcTalos(opts) {
             });
             return result;
         }
+}
+    async function getEventsWithLocation(id) {
+        const result = await db["primary"].any(mdlTest.getEventsWithLocation, {
+            destination_id: id,
+        });
+console.log(result);
+        // return result;
+
     }
+
     return {
         getFromDB,
         getRandomEvents,
         getEventData,
-        eventAds,
-    };
 
-    return {
-        getFromDB,
+        eventAds,
+        getEventsWithLocation,
+
     };
 };

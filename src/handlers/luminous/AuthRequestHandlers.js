@@ -17,7 +17,6 @@ module.exports = function AuthRequestHandlers(opts) {
         const sent = await authMediator.getEventData(id);
         reply.send(sent);
     }
-
     async function eventAds(req, reply) {
         const { city } = req.params;
 
@@ -27,11 +26,20 @@ module.exports = function AuthRequestHandlers(opts) {
         } catch (e) {
             reply.send(e);
         }
+        }
+    async function getEventsWithLocation(request, reply) {
+        const destination_id = request.query.id;
+        
+        const sent = await authMediator.getEventsWithLocation(destination_id);
+        reply.send(sent);
+
     }
     return {
         test,
         getRandomEvents,
         getEventData,
         eventAds,
+        getEventsWithLocation,
+
     };
 };

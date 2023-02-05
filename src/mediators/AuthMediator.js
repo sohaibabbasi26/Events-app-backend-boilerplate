@@ -24,6 +24,11 @@ module.exports = function AuthMediator(opts) {
         result = await svcTalos.getEventData(id);
         return result;
     }
+    async function  getEventsWithLocation(id){
+        result = await svcTalos. getEventsWithLocation(id);
+        return result;
+
+    }
 
     async function eventAds(city){
 
@@ -45,5 +50,6 @@ module.exports = function AuthMediator(opts) {
         getEventData,
         test,
         eventAds
+        getEventsWithLocation
     }
 }
