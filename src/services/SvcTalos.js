@@ -1,5 +1,4 @@
 module.exports = function SvcTalos(opts) {
-
     const { svcCache, queryHandler, mdlTest, db, eventAd, _ } = opts;
 
     async function getFromDB({ phone }) {
@@ -22,31 +21,29 @@ module.exports = function SvcTalos(opts) {
         return result;
     }
 
-
     async function eventAds(tableName) {
         console.log("services-> ", tableName);
 
         const res = await db["primary"].any(eventAd.checkCityExists, {
             tablename: tableName,
         });
-        const { exists } = res[0];
-        if (!exists) {
+        const { table_name } = res[0];
+        if (!table_name) {
             return { message: "City not found" };
         } else {
             console.log("here");
             const result = await db["primary"].any(eventAd.getEvents, {
-                table: tableName,
+                table: table_name,
             });
             return result;
         }
-}
+    }
     async function getEventsWithLocation(id) {
         const result = await db["primary"].any(mdlTest.getEventsWithLocation, {
             destination_id: id,
         });
-console.log(result);
-        // return result;
-
+        // console.log(result);
+        return result;
     }
 
     return {
@@ -56,6 +53,5 @@ console.log(result);
 
         eventAds,
         getEventsWithLocation,
-
     };
 };

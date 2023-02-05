@@ -63,7 +63,7 @@ module.exports = async function FastServer(options) {
         const _adapters = await adapters(_container.cradle);
 
         await _di.register("db", _adapters.db, true);
-        // await _di.register("cache", _adapters.cache, true);
+        await _di.register("cache", _adapters.cache, true);
 
         await decorateServer("di", () => _container);
 

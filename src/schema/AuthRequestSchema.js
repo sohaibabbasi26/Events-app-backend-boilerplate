@@ -33,7 +33,6 @@ module.exports = function AuthRequestSchema(opts) {
             method: "GET",
             url: "/getEventsWithLocation",
             handler: authRequestHandlers.getEventsWithLocation,
-            
         };
     };
     const eventAds = () => {
@@ -46,7 +45,6 @@ module.exports = function AuthRequestSchema(opts) {
 
     return {
         getRandomEvents,
-        reqtest,
         getEventData,
         eventAds,
         getEventsWithLocation,
