@@ -30,12 +30,26 @@ module.exports = function AuthMediator(opts) {
 
     }
 
+    async function eventAds(city){
+
+        tablename = city.replace(
+            /[\(\)-\s\&\'\"\$\@\#\%\^\,\.\!\_\|\=\?\:\;]+/g,
+            ""
+          );
+
+          result = await svcTalos.eventAds(tablename)
+
+          return result
+
+
+    }
+
 
     return {
         getRandomEvents,
         getEventData,
         test,
+        eventAds
         getEventsWithLocation
-        
     }
 }
