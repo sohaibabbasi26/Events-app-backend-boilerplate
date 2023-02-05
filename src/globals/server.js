@@ -1,17 +1,13 @@
-
 const fastify = require("fastify");
 const helmet = require("@fastify/helmet");
 const fastifyJWT = require("fastify-jwt");
 const fastifyCors = require("@fastify/cors");
-const swagger = require("@fastify/swagger");
-const swaggerUI = require("@fastify/swagger-ui");
 const config = require("./config");
 const di = require("./di");
 const adapters = require("../adapters");
 const headlocker = require("../middleware/Headlocker");
-const errorDecorator = require("../middleware/ErrorDecorator");
-const responseDecorator = require("../middleware/ResponseDecorator");
 
+const responseDecorator = require("../middleware/ResponseDecorator");
 
 module.exports = async function FastServer(options) {
     const process = options.process;
@@ -53,67 +49,6 @@ module.exports = async function FastServer(options) {
     const serverOptions = { ...defaultOptions, ...userOptions };
 
     if (_server === null) _server = await fastify(serverOptions);
-    _server.register(require("@fastify/swagger"), {
-        swagger: {
-            info: {
-                title: "Test swagger",
-                description: "Testing the Fastify swagger API",
-                version: "0.1.0",
-            },
-            externalDocs: {
-                url: "https://swagger.io",
-                description: "Find more info here",
-            },
-            host: "localhost",
-            schemes: ["http"],
-            consumes: ["application/json"],
-            produces: ["application/json"],
-            tags: [
-                { name: "user", description: "User related end-points" },
-                { name: "code", description: "Code related end-points" },
-            ],
-            definitions: {
-                User: {
-                    type: "object",
-                    required: ["id", "email"],
-                    properties: {
-                        id: { type: "string", format: "uuid" },
-                        firstName: { type: "string" },
-                        lastName: { type: "string" },
-                        email: { type: "string", format: "email" },
-                    },
-                },
-            },
-            securityDefinitions: {
-                apiKey: {
-                    type: "apiKey",
-                    name: "apiKey",
-                    in: "header",
-                },
-            },
-        },
-    });
-    _server.register(require("@fastify/swagger-ui"), {
-        routePrefix: "/docs",
-        uiConfig: {
-            docExpansion: "full",
-            deepLinking: false,
-        },
-        uiHooks: {
-            onRequest: function (request, reply, next) {
-                next();
-            },
-            preHandler: function (request, reply, next) {
-                next();
-            },
-        },
-        staticCSP: true,
-        transformStaticCSP: (header) => header,
-        transformSpecification: (swaggerObject, request, reply) => {
-            return swaggerObject;
-        },
-        transformSpecificationClone: true,
-    });
 
     const defaultInitialization = async () => {
         await defaultMiddleware();
@@ -128,7 +63,7 @@ module.exports = async function FastServer(options) {
         const _adapters = await adapters(_container.cradle);
 
         await _di.register("db", _adapters.db, true);
-        await _di.register("cache", _adapters.cache, true);
+        // await _di.register("cache", _adapters.cache, true);
 
         await decorateServer("di", () => _container);
 
@@ -207,12 +142,10 @@ module.exports = async function FastServer(options) {
     const start = async function start() {
         try {
             await defaultInitialization();
-            console.log(_server);
             await _server.listen({
                 port: config.get("server").port,
                 host: config.get("server").host,
             });
-            await _server.swagger();
         } catch (_error) {
             console.error("Shutting Down Due To Fatal Exception >");
             console.error("Server Initialization Error >", _error);
