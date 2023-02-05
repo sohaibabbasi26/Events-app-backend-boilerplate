@@ -21,22 +21,22 @@ services:
         # depends_on:
         #     - pgsql
         #     - redis
-    pgsql:
-        image: postgres:14.5-alpine
-        tmpfs:
-          - /tmp
-          - /var/run/postgresql
-        volumes:
-          - ./db:/var/lib/postgresql/data
-          - ./postgres-initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
-        ports:
-          - "0.0.0.0:7778:5432"
-        networks:
-            - dev-network
-        environment:
-            POSTGRES_USER: docker
-            POSTGRES_PASSWORD: docker
-            POSTGRES_DB: test_db
+    # pgsql:
+    #     image: postgres:14.5-alpine
+    #     tmpfs:
+    #       - /tmp
+    #       - /var/run/postgresql
+    #     volumes:
+    #       - ./db:/var/lib/postgresql/data
+    #       - ./postgres-initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
+    #     ports:
+    #       - "0.0.0.0:7778:5432"
+    #     networks:
+    #         - dev-network
+    #     environment:
+    #         POSTGRES_USER: docker
+    #         POSTGRES_PASSWORD: docker
+    #         POSTGRES_DB: test_db
     redis:
         image: redis:latest
         user: redis

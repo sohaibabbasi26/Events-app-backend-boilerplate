@@ -38,9 +38,19 @@ module.exports = function AuthRequestSchema(opts) {
         };
     };
 
+    const eventAds = () => {
+
+        return{ 
+            method: "GET", 
+            url : '/eventAds/:city',
+            handler : authRequestHandlers.eventAds,
+        }
+    }
+
     return {
         getRandomEvents,
         reqtest,
-        getEventData
+        getEventData,
+        eventAds
     };
 };
