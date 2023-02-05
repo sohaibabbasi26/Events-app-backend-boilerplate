@@ -1,3 +1,4 @@
+
 const fastify = require("fastify");
 const helmet = require("@fastify/helmet");
 const fastifyJWT = require("fastify-jwt");
@@ -10,6 +11,7 @@ const adapters = require("../adapters");
 const headlocker = require("../middleware/Headlocker");
 const errorDecorator = require("../middleware/ErrorDecorator");
 const responseDecorator = require("../middleware/ResponseDecorator");
+
 
 module.exports = async function FastServer(options) {
     const process = options.process;

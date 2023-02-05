@@ -1,77 +1,55 @@
 module.exports = function AuthRequestSchema(opts) {
     const { authRequestHandlers, Joi } = opts;
+    // const verifyAuthOtvc = () => {
+    //     return {
+    //         method: 'POST',
+    //         schema: {
+    //             body: Joi.object().keys({
+    //                 otvc: Joi.string().required(),
+    //                 phone: Joi.string().required(),
+    //             })
+    //         },
+    //         url: '/verify/auth/otvc',
+    //         handler: authRequestHandlers.verifyAuthOtvc,
+    //     }
+    // }
 
-    const verifyAuthOtvc = () => {
+    const getRandomEvents = () => {
         return {
-            method: "POST",
-            schema: {
-                body: Joi.object().keys({
-                    otvc: Joi.string().required(),
-                    phone: Joi.string().required(),
-                }),
-            },
-            url: "/verify/auth/otvc",
-            handler: () => {},
+            method: "GET",
+            url: "/randomEvents",
+            handler: authRequestHandlers.getRandomEvents,
         };
     };
-
-    const reqtest = () => {
+    const getEventData = () => {
         return {
-            method: "POST",
-            url: "/test",
-            schema: {
-                description: "post some data",
-                tags: ["user", "code"],
-                summary: "qwerty",
-                params: {
-                    type: "object",
-                    properties: {
-                        id: {
-                            type: "string",
-                            description: "user id",
-                        },
-                    },
-                },
-                body: {
-                    type: "object",
-                    properties: {
-                        hello: { type: "string" },
-                        obj: {
-                            type: "object",
-                            properties: {
-                                some: { type: "string" },
-                            },
-                        },
-                    },
-                },
-                response: {
-                    201: {
-                        description: "Successful response",
-                        type: "object",
-                        properties: {
-                            hello: { type: "string" },
-                        },
-                    },
-                    default: {
-                        description: "Default response",
-                        type: "object",
-                        properties: {
-                            foo: { type: "string" },
-                        },
-                    },
-                },
-                security: [
-                    {
-                        apiKey: [],
-                    },
-                ],
-            },
-            handler: authRequestHandlers.test,
+            method: "GET",
+            url: "/getEventData",
+            handler: authRequestHandlers.getEventData,
         };
     };
+    const getEventsWithLocation = () => {
+        return {
+            method: "GET",
+            url: "/getEventsWithLocation",
+            handler: authRequestHandlers.getEventsWithLocation,
+            
+        };
+    };
+    const eventAds = () => {
+
+        return{ 
+            method: "GET", 
+            url : '/eventAds/:city',
+            handler : authRequestHandlers.eventAds,
+        }
+    }
 
     return {
+        getRandomEvents,
         reqtest,
-        verifyAuthOtvc,
+        getEventData,
+        eventAds,
+        getEventsWithLocation,
     };
 };
