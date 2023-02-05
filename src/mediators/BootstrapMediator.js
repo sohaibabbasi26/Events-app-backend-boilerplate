@@ -1,125 +1,122 @@
-module.exports = function BootstrapMediator(opts) {
+// module.exports = function BootstrapMediator(opts) {
 
-    const {
-        svcCache,
-        logger,
-        utility,
-        _,
-        queue,
-        mdRabbitMq,
-        statusesConsumers,
-    } = opts;
+//     const {
+//         svcCache,
+//         logger,
+//         utility,
+//         _,
+//         queue,
+//         mdRabbitMq,
+//         statusesConsumers,
+//     } = opts;
 
-    const { asyncForEach } = utility;
+//     const { asyncForEach } = utility;
 
-    async function initQueueConsumers() {
-        // await mdRabbitMq.initQueueConsumers({ consumers: requestsConsumers });
-        //await mdRabbitMq.initQueueConsumers({ consumers: statusesConsumers });
+//     async function initQueueConsumers() {
+//         // await mdRabbitMq.initQueueConsumers({ consumers: requestsConsumers });
+//         //await mdRabbitMq.initQueueConsumers({ consumers: statusesConsumers });
 
-        return true;
-    }
+//         return true;
+//     }
 
-    async function initSystemQueues() {
-        const { mqconfig, channel } = queue.primary;
+//     async function initSystemQueues() {
+//         const { mqconfig, channel } = queue.primary;
 
-        const { exchange, routing, queues } = mqconfig;
+//         const { exchange, routing, queues } = mqconfig;
 
-        const _registrations = Object.keys(queues);
+//         const _registrations = Object.keys(queues);
 
-        await asyncForEach(_registrations, async (_r) => {
-            const route = routing[_r];
-            const queue = queues[_r];
+//         await asyncForEach(_registrations, async (_r) => {
+//             const route = routing[_r];
+//             const queue = queues[_r];
 
-            await channel.assertExchange(exchange, 'direct', { durable: true });
-            await channel.assertQueue(queue);
-            await channel.bindQueue(queue, exchange, route);
-        });
+//             await channel.assertExchange(exchange, 'direct', { durable: true });
+//             await channel.assertQueue(queue);
+//             await channel.bindQueue(queue, exchange, route);
+//         });
 
-        return true;
-    }
+//         return true;
+//     }
 
-    async function initSystemSettings() {
-return;
-        logger.trace(`Initializing System Settings > Initialize > Begin`);
+//     async function initSystemSettings() {
+// return;
+//         logger.trace(`Initializing System Settings > Initialize > Begin`);
 
-        
+//         if (settings) {
+//             const groups = _.map(settings, (value) => value.field_group);
 
-        if (settings) {
-            const groups = _.map(settings, (value) => value.field_group);
+//             const _obj = {};
 
-            const _obj = {};
+//             await asyncForEach(groups, (group) => {
+//                 if (!_obj[group]) _obj[group] = {};
+//             });
 
-            await asyncForEach(groups, (group) => {
-                if (!_obj[group]) _obj[group] = {};
-            });
+//             await asyncForEach(settings, async (setting) => {
+//                 const {
+//                     field_group,
+//                     field_name,
+//                     field_value
+//                 } = setting;
 
+//                 if (!_obj[field_group]) _obj[field_group] = {};
 
-            await asyncForEach(settings, async (setting) => {
-                const {
-                    field_group,
-                    field_name,
-                    field_value
-                } = setting;
+//                 _obj[field_group][field_name] = field_value;
+//             })
 
-                if (!_obj[field_group]) _obj[field_group] = {};
+//             const keys = Object.keys(_obj);
 
-                _obj[field_group][field_name] = field_value;
-            })
+//             await asyncForEach(keys, async (key) => {
+//                 const _setting_key = `SYSSETTING:${key.toUpperCase()}`;
 
-            const keys = Object.keys(_obj);
+//                 await svcCache.setHash({
+//                     hashKey: _setting_key,
+//                     fields: _obj[key]
+//                 });
+//             });
+//         }
 
-            await asyncForEach(keys, async (key) => {
-                const _setting_key = `SYSSETTING:${key.toUpperCase()}`;
+//         logger.trace(`Initializing System Settings > Initialize > End`);
+//     }
 
-                await svcCache.setHash({
-                    hashKey: _setting_key,
-                    fields: _obj[key]
-                });
-            });
-        }
+//     async function initRaptorAuth() {
+//         // let token = await svcCache.getKV({
+//         //     key: 'ELRP_TOKEN'
+//         // });
 
-        logger.trace(`Initializing System Settings > Initialize > End`);
-    }
+//         // logger.trace('Bootstrap Mediator > initRaptorAuth > Token From Cache >', token);
 
-    async function initRaptorAuth() {
-        // let token = await svcCache.getKV({
-        //     key: 'ELRP_TOKEN'
-        // });
+//         // if (token === null) {
+//         //     logger.trace('No client token in cache, requesting new one >');
 
-        // logger.trace('Bootstrap Mediator > initRaptorAuth > Token From Cache >', token);
+//         //     token = await svcRaptor.fetchClientToken();
 
-        // if (token === null) {
-        //     logger.trace('No client token in cache, requesting new one >');
+//         //     const { code, data, message } = token;
 
-        //     token = await svcRaptor.fetchClientToken();
+//         //     if (code === 200) {
+//         //         token = data.token;
+//         //     } else throw Error(`Eleanor can not initialize due to error from Raptor >`, message);
 
-        //     const { code, data, message } = token;
+//         //     logger.trace('Client token fetched from raptor >', token)
 
-        //     if (code === 200) {
-        //         token = data.token;
-        //     } else throw Error(`Eleanor can not initialize due to error from Raptor >`, message);
+//         //     await svcCache.setKV({
+//         //         key: 'ELRP_TOKEN',
+//         //         value: token,
+//         //     });
+//         // }
 
-        //     logger.trace('Client token fetched from raptor >', token)
+//         // logger.trace(`Raptor Auth Token Initialized >`, token);
 
-        //     await svcCache.setKV({
-        //         key: 'ELRP_TOKEN',
-        //         value: token,
-        //     });
-        // }
+//         return null;//token;
+//     }
 
-        // logger.trace(`Raptor Auth Token Initialized >`, token);
+//     const initialize = async function initialize() {
+//         await initRaptorAuth();
+//         await initSystemSettings();
+//         await initSystemQueues();
+//         await initQueueConsumers();
+//     }
 
-        return null;//token;
-    }
-
-    const initialize = async function initialize() {
-        await initRaptorAuth();
-        await initSystemSettings();
-        await initSystemQueues();
-        await initQueueConsumers();
-    }
-
-    return {
-        initialize,
-    }
-}
+//     return {
+//         initialize,
+//     }
+// }
