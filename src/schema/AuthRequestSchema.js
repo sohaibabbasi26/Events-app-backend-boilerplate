@@ -1,5 +1,3 @@
-// var slugify = require("slugify");
-
 module.exports = function AuthRequestSchema(opts) {
     const { authRequestHandlers, Joi } = opts;
     // const verifyAuthOtvc = () => {
@@ -35,17 +33,9 @@ module.exports = function AuthRequestSchema(opts) {
             method: "GET",
             url: "/getEventsWithLocation",
             handler: authRequestHandlers.getEventsWithLocation,
+            
         };
     };
-
-    const reqtest = () => {
-        return {
-            method: "POST",
-            url: "/test",
-            handler: authRequestHandlers.test,
-        };
-    };
-
     const eventAds = () => {
         return {
             method: "GET",
