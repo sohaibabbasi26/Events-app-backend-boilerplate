@@ -12,6 +12,12 @@ module.exports = function AuthRequestHandlers(opts) {
         const sent = await authMediator.getRandomEvents();
         reply.send(sent);
     }
+
+    async function getAttractions(request,reply) {
+        const sent = await authMediator.getAttractions();
+        reply.send(sent);
+    }
+
     async function getEventData(request, reply) {
         const id = request.query.id;
         const sent = await authMediator.getEventData(id);
@@ -34,12 +40,20 @@ module.exports = function AuthRequestHandlers(opts) {
         reply.send(sent);
 
     }
+
+    async function postRandomEvents(request,reply) {
+        const sent = await authMediator.postRandomEvents();
+        reply.send(sent);
+    }
+
+
     return {
         test,
         getRandomEvents,
         getEventData,
         eventAds,
         getEventsWithLocation,
-
+        postRandomEvents,
+        getAttractions        
     };
 };

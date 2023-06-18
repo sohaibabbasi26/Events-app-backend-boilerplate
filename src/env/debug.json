@@ -8,7 +8,7 @@
         "version": "1.0",
         "name": "Eleanor",
         "host": "0.0.0.0",
-        "port": 3000,
+        "port": 3001,
         "ssl": false,
         "api_prefix": "/v1",
         "sms_api": "http://bykea.eocean.us:24555/api?action=sendmessage&username=bykea_9210_api&password=ByKeAqwecd&recipient=#receiver&originator=9210&messagedata=#msg"
@@ -55,11 +55,11 @@
     },
     "database": {
         "pgsql": {
-            "host": "rds-event-scrapper.cokhicdox1gs.us-west-1.rds.amazonaws.com",
-            "port": 5432,
+            "host":"52.26.210.137",
+            "port":5432,
             "database": "test_db",
             "user": "postgres",
-            "password": "admin123"
+            "password": "elitebooki1"
         }
     },
     "cache": {

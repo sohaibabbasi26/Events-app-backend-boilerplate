@@ -6,8 +6,17 @@ const config = require("./config");
 const di = require("./di");
 const adapters = require("../adapters");
 const headlocker = require("../middleware/Headlocker");
+const Swagger =require('../helpers/swagger.json')
+const SwaggerOpts =require('../helpers/swagger-options.js')
+// fastify.register(require('fastify-swagger'),SwaggerOpts)
+// const swaggerJSDoc =require('swagger-jsdoc')
+// const swaggerUi =require('fastify-swagger-ui')
+// swaggerUi.serve 
+// swaggerUi.setup(Swagger)
+//const options =require('../helpers/swagger-options')
 
 const responseDecorator = require("../middleware/ResponseDecorator");
+const fastifySwaggerUi = require("fastify-swagger-ui");
 
 module.exports = async function FastServer(options) {
     const process = options.process;
@@ -73,7 +82,10 @@ module.exports = async function FastServer(options) {
             ({ schema }) =>
                 (data) =>
                     schema.validate(data)
+
         );
+        // _server.register(require('fastify-swagger'),SwaggerOpts,swaggerUi.serve);
+    
     };
 
     const defaultMiddleware = async () => {
@@ -120,6 +132,14 @@ module.exports = async function FastServer(options) {
             reply.send(error || new boom("Got non-error: " + error));
         });
 
+        _server.register(require('@fastify/swagger'), SwaggerOpts);
+        _server.register(require('@fastify/swagger-ui'), {
+            swagger: {
+                url: '/documentation/json',
+            },
+            prefix: '/documentation'
+        });
+
         _server.register(responseDecorator);
 
         _server.register(headlocker);
@@ -139,13 +159,17 @@ module.exports = async function FastServer(options) {
         _server.decorate(key, value);
     };
 
+
     const start = async function start() {
         try {
             await defaultInitialization();
             await _server.listen({
                 port: config.get("server").port,
                 host: config.get("server").host,
-            });
+            }
+            
+            )
+            _server.SwaggerOpts;
         } catch (_error) {
             console.error("Shutting Down Due To Fatal Exception >");
             console.error("Server Initialization Error >", _error);

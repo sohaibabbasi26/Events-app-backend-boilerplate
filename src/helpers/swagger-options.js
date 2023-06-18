@@ -1,7 +1,8 @@
 exports.options = {
+    openapi: "3.0.0",
     routePrefix: "/documentation",
     exposeRoute: true,
-    swagger: {
+    definition: {
         info: {
             title: "Swagger tutorial",
             description: "Swagger tutorial APIS",
@@ -11,9 +12,17 @@ exports.options = {
             url: "https://swagger.io",
             description: "Find more info here",
         },
-        host: "localhost:3000",
+        servers: [
+            {
+                url: "http://localhost:3001/",
+                description: "Local server",
+            },
+        ],
+
+        host: "localhost:3001",
         schemes: ["http"],
         consumes: ["application/json"],
         produces: ["application/json"],
     },
+    apis: ["../schema/AuthRequestSchema.js"], // specify the path(s) to your API route files
 };

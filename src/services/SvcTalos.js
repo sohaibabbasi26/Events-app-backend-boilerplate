@@ -1,3 +1,5 @@
+const { result } = require("lodash");
+
 module.exports = function SvcTalos(opts) {
     const { svcCache, queryHandler, mdlTest, db, eventAd, _ } = opts;
 
@@ -13,11 +15,23 @@ module.exports = function SvcTalos(opts) {
 
         return result;
     }
+
+    async function postRandomEvents() {
+        console.log("hello from the post method in service file!");
+        const result = await db["primary"].any(mdlTest.query, "");
+        return result;
+    }
+
     async function getEventData(id) {
         const result = await db["primary"].any(mdlTest.getEventData, {
             event_id: id,
         });
 
+        return result;
+    }
+
+    async function getAttractions() {
+        const result = await db["primary"].any(mdlTest.getRandomEvents, "");
         return result;
     }
 
@@ -50,8 +64,9 @@ module.exports = function SvcTalos(opts) {
         getFromDB,
         getRandomEvents,
         getEventData,
-
+        postRandomEvents,
         eventAds,
         getEventsWithLocation,
+        getAttractions
     };
 };

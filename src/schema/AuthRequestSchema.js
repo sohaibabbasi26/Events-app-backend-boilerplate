@@ -1,3 +1,6 @@
+const keys = require('../validation/eventsValidation.js');
+const db = require('../models/MdlTest.js');
+
 module.exports = function AuthRequestSchema(opts) {
     const { authRequestHandlers, Joi } = opts;
     // const verifyAuthOtvc = () => {
@@ -21,6 +24,15 @@ module.exports = function AuthRequestSchema(opts) {
             handler: authRequestHandlers.getRandomEvents,
         };
     };
+
+    const getAttractions = () => {
+        return {
+            method: "GET",
+            url: "/attractions",
+            handler: authRequestHandlers.getAttractions,
+        }
+    }
+
     const getEventData = () => {
         return {
             method: "GET",
@@ -42,11 +54,24 @@ module.exports = function AuthRequestSchema(opts) {
             handler: authRequestHandlers.eventAds,
         };
     };
+    const postRandomEvents = () => {
+        return{
+            method: "POST",
+            url:"/postRandomEvents",
+            handler : authRequestHandlers.postRandomEvents,
+            schema : {
+                body: keys
+            }
+        };
+    };
+    
 
     return {
         getRandomEvents,
         getEventData,
         eventAds,
         getEventsWithLocation,
+        postRandomEvents,
+        getAttractions
     };
 };

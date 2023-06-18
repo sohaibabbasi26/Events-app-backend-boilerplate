@@ -1,64 +1,57 @@
-version: '3'
+
+version: '3.5'
 
 services:
-    # web:
-    #     build:
-    #         context: .
-    #     environment:
-    #         - NODE_ENV=development
-    #         - staging=true
-    #         - PORT=3000
-    #     command: npm start
-    #     volumes:
-    #         - .:/myapp
-    #     ports:
-    #         - "0.0.0.0:7777:3000"
-    #     networks:
-    #         - dev-network
-        # links:
-        #     - pgsql
-        #     - redis
-        # depends_on:
-        #     - pgsql
-        #     - redis
-    # pgsql:
-    #     image: postgres:14.5-alpine
-    #     tmpfs:
-    #       - /tmp
-    #       - /var/run/postgresql
-    #     volumes:
-    #       - ./db:/var/lib/postgresql/data
-    #       - ./postgres-initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
-    #     ports:
-    #       - "0.0.0.0:7778:5432"
-    #     networks:
-    #         - dev-network
-    #     environment:
-    #         POSTGRES_USER: docker
-    #         POSTGRES_PASSWORD: docker
-    #         POSTGRES_DB: test_db
+
+    postgres:
+        
+        container_name: pgsql
+        image: postgres:14.7
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: elitebooki1
+            POSTGRES_DB: test_db
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        #     - ./postgres-initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
+        ports:
+            - "7778:5432"
+        networks:
+            - dev-network
+        restart: unless-stopped
+
     redis:
         image: redis:latest
         user: redis
         networks:
-            - dev-network
+        - dev-network
         ports:
-          - "0.0.0.0:7779:6379"
+        - "0.0.0.0:7779:6379"
+
     rabbitmq:
         build:
             context: docker/rabbitmq
         container_name: rabbitmq
         hostname: rabbitmq
         ports:
-            - 5672:5672
-            - 15672:15672
+             - 5672:5672
+             - 15672:15672
         networks:
             - dev-network
         environment:
             - RABBITMQ_DEFAULT_USER=admin
             - RABBITMQ_DEFAULT_PASS=admin
             - RABBITMQ_DEFAULT_VHOST=/
+    adminer:
+
+          image: adminer
+          restart: always
+          ports:
+            - 8080:8080
 
 networks:
-    dev-network:
-        driver: bridge
+     dev-network:
+         driver: bridge
+
+volumes:
+  pgdata:

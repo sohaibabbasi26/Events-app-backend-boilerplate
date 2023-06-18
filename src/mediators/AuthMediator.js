@@ -1,3 +1,4 @@
+
 module.exports = function AuthMediator(opts) {
     const { svcTalos } = opts;
 
@@ -13,6 +14,17 @@ module.exports = function AuthMediator(opts) {
         result = await svcTalos.getRandomEvents();
         return result;
     }
+
+    async function getAttractions() {
+        result = await svcTalos.getAttractions();
+        return result; 
+    }
+
+    async function postRandomEvents(){
+        result = await svcTalos.postRandomEvents();
+        return result;
+    }
+
     async function getEventData(id) {
         result = await svcTalos.getEventData(id);
         return result;
@@ -34,11 +46,14 @@ module.exports = function AuthMediator(opts) {
         return result;
     }
 
+    
     return {
         getRandomEvents,
         getEventData,
         test,
         eventAds,
         getEventsWithLocation,
+        postRandomEvents,
+        getAttractions
     };
 };
